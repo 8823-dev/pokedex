@@ -1,8 +1,12 @@
-import { useState, type ChangeEventHandler, type ChangeEvent } from "react";
+import { useState } from "react";
+import type { ChangeEventHandler, ChangeEvent } from "react";
 import apiClient from "../utils/axios";
+import { useRecoilState } from "recoil";
+import searchResultState from "../states/searchResultState";
 
 const SearchBox = () => {
   const [inputText, setInputText] = useState("");
+  const [searchResult, setSearchResult] = useRecoilState(searchResultState);
 
   const changeInputText: ChangeEventHandler<HTMLInputElement> = (
     e: ChangeEvent<HTMLInputElement>
@@ -11,8 +15,16 @@ const SearchBox = () => {
   };
 
   const doSearch = async () => {
+    if (inputText === "") return;
     const { data } = await apiClient.get(inputText);
-    console.log(data);
+
+    const pokemon = {
+      id: data.id,
+      name: data.name,
+      image_url: data.sprites.front_default,
+    };
+    setSearchResult(pokemon);
+
     setInputText("");
   };
 

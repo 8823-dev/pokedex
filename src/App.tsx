@@ -1,10 +1,13 @@
+import { RecoilRoot } from "recoil";
 import "./App.css";
 import SearchBox from "./components/SearchBox";
 
 function App() {
   return (
     <div>
-      <SearchBox />
+      <RecoilRoot>
+        <SearchBox />
+      </RecoilRoot>
     </div>
   );
 }
